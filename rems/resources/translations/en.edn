@@ -1,0 +1,599 @@
+{:t
+ {:accept-invitation {:header "Accept invitation"
+                      :title "Accept invitation"
+                      :success {:workflow "Successfully joined workflow handling."}
+                      :errors {:already-member {:workflow "You are already a handler."}
+                               :invalid-invitation-type "Accepting invitation failed."
+                               :invalid-token [:span "Accepting the invitation failed. Check the invitation token " [:code "%1"]]
+                               :invalid-workflow "Accepting invitation failed."}}
+  :actions {:accept-invitation "Accept invitation"
+            :accept-invitation-already-member "You are already a member."
+            :accept-invitation-success "Successfully joined the application."
+            :accept-licenses "Accept the terms of use"
+            :add-licenses "Add terms of use"
+            :add-member "Add member"
+            :approve "Approve"
+            :approve-end-date "Date for access rights to expire (optional)"
+            :approve-reject "Approve or reject"
+            :assign-external-id "Assign external id"
+            :assign-external-id-info "External id"
+            :bundling-intro [:div.intro [:p "Note that only resources that have the same application workflow can be bundled together."]]
+            :cancel "Cancel"
+            :change-applicant "Make applicant"
+            :change-resources "Change resources"
+            :clear "Clear"
+            :close "Close application"
+            :close-intro [:div.intro [:p "Note that if the application is closed, it cannot be modified or submitted anymore."]]
+            :commands "Actions"
+            :decide "Decide"
+            :delete "Delete draft"
+            :delete-intro [:div.intro [:p "Permanently delete this draft?"]]
+            :errors {:already-member "User is already a member of this application"
+                     :duplicate-id "Id is already in use."
+                     ;; %1 - invitation token
+                     :invalid-token [:div [:p "Joining the application failed."] [:p "Check the invitation token " [:code "%1"]]]
+                     :licenses-not-accepted "Terms of use not accepted."
+                     ;; %1 - organization name
+                     :organization-does-not-exist "Organization \"%1\" does not exist"
+                     :validation-errors "Check the following errors:"
+                     :validation-warnings "Check the following before submit:"
+                     :entitlement-end-not-in-future "The expiration date for access rights must be in the future."}
+            :generate-ega-api-key-in-profile "Generate one at the Profile page."
+            :handled-applications "Processed applications"
+            :invite-member "Invite member"
+            :licenses-selection "Add terms of use"
+            :member "Member"
+            :member-email "Email"
+            :member-name "Name"
+            :modify "Modify"
+            :name-and-email-required "Name and email are required."
+            :redact-attachments "Redact attachments"
+            :reject "Reject"
+            :remark "Remark"
+            :remark-public "Show to applicant"
+            :remove-attachments "Remove attachments"
+            :remove-member "Remove member"
+            :replace-attachments "Replace attachments"
+            :request-decision "Request decision"
+            :request-decision-dropdown "Request decision"
+            :request-decision-dropdown-from-user "from existing user..."
+            :request-decision-dropdown-via-email "via email..."
+            :request-decision-from-user "Request decision from existing user"
+            :request-decision-via-email "Request decision via email"
+            :request-review "Request review"
+            :request-review-dropdown "Request review"
+            :request-review-dropdown-from-user "from existing user..."
+            :request-review-dropdown-via-email "via email..."
+            :request-review-from-user "Request review from existing user"
+            :request-review-via-email "Request review via email"
+            :request-selections "Send requests to"
+            :resources-selection "Resources included in the application:"
+            :return "Return to applicant"
+            :review "Review"
+            :revoke "Revoke entitlement"
+            :todo-applications "Open applications"}
+  :administration {:active "Active"
+                   :add "Add"
+                   :added-at "Added at"
+                   :added-by "Added by"
+                   :archive "Archive"
+                   :back "Back"
+                   :blacklist "Blacklist"
+                   :change-form "Change form"
+                   :cancel "Cancel"
+                   :catalogue-item "Catalogue item"
+                   :catalogue-items "Catalogue items"
+                   :categories "Categories"
+                   :category "Category"
+                   :category-children "Subcategories"
+                   :change "Change"
+                   :comment "Comment"
+                   :copy-as-new "Copy as new"
+                   :create-catalogue-item "Create catalogue item"
+                   :create-category "Create category"
+                   :create-form "Create form"
+                   :create-license "Create license"
+                   :create-organization "Create organization"
+                   :create-resource "Create resource"
+                   :create-workflow "Create workflow"
+                   :created "Created"
+                   :delete "Delete"
+                   :delete-confirmation "Do you really want to delete?"
+                   :description "Description"
+                   :disable "Disable"
+                   :disabled-and-archived-explanation "Disabling hides an item from applicants. Archiving also hides it in the administration view."
+                   :display-archived "Display archived"
+                   :display-order "Display order"
+                   :edit "Edit"
+                   :edit-catalogue-item "Edit catalogue item"
+                   :edit-category "Edit category"
+                   :edit-form "Edit form"
+                   :edit-organization "Edit organization"
+                   :edit-workflow "Edit workflow"
+                   :email "Email"
+                   :enable "Enable"
+                   :end "End"
+                   :errors {:dependencies-archived "Archived dependencies:"
+                            :in-use-by "It is in use by:"
+                            :dependencies-not-found "Missing dependencies:"
+                            :self-as-subcategory-disallowed "Cannot set category as it's own subcategory"
+                            :ancestor-as-subcategory-disallowed "Cannot set category as subcategory, because it would create a loop"}
+                   :export-applications "Export applications"
+                   :external-title "Title"
+                   :form "Form"
+                   :forms "Forms"
+                   :has-errors "Errors"
+                   :id "Id"
+                   :internal-name "Name"
+                   :license "License"
+                   ;; %1 - license name
+                   :license-field "License \"%1\""
+                   :licenses "Licenses"
+                   :manage-categories "Manage categories"
+                   :more-info "More info URL"
+                   :name "Name"
+                   :no-categories "No categories"
+                   :no-form "No form"
+                   :no-licenses "No licenses"
+                   :optional "(optional)"
+                   :org "Org"
+                   :organization "Organization"
+                   :organizations "Organizations"
+                   :owners "Owners"
+                   :preview "Preview"
+                   :remove "Remove"
+                   :reports "Reports"
+                   :resource "Resource"
+                   :resources "Resources"
+                   ;; %1 - number
+                   :review-email-n "Review email %1"
+                   :review-emails "Review emails"
+                   :save "Save"
+                   :short-name "Short name"
+                   :start "Start"
+                   :title "Title"
+                   :type "Type"
+                   :unarchive "Unarchive"
+                   :user "User"
+                   :userid "User id"
+                   :view "View"
+                   :workflow "Workflow"
+                   :workflows "Workflows"}
+  :applicant-info {:applicant "Applicant"
+                   :applicants "Applicants"
+                   :email "Email"
+                   :email-idp "Email (from identity provider)"
+                   :invited-member "Invited member"
+                   :member "Member"
+                   :name "Name"
+                   :notification-email "Email (set by user)"
+                   :organization "Organization"
+                   :researcher-status "Applicant researcher status"
+                   :username "Username"}
+  :applications {:all-applications "All applications"
+                 :applicant "Applicant"
+                 :application "Application"
+                 :applications "Applications"
+                 :attachment-filename-redacted "Attachment redacted"
+                 :continue-existing-application "Continue application"
+                 :copied-from "copied from"
+                 :copied-to "copied to"
+                 :created "Created"
+                 ;; TODO: Once the terms have stabilized, convert db and the
+                 ;;   code to match the term in UI.
+                 :description "Title"
+                 :details "Details"
+                 :duos {:validation {:missing-duo-codes "Data Use Ontology codes are specified in resources but missing from application:"}}
+                 :empty "No applications."
+                 ;; %1 - date
+                 :entitlement-end "Access rights end %1."
+                 ;; Format parameters for all events:
+                 ;; %1 - name of event actor
+                 :events {:applicant-changed "%1 changed the applicant to %2."
+                          :approved "%1 approved the application."
+                          :attachments-redacted "%1 redacted attachments. %2"
+                          :closed "%1 closed the application."
+                          :copied-from "This application is a copy of an old application."
+                          :copied-to "%1 copied the application to a new application."
+                          :created "%1 created application %2."
+                          :decided "%1 filed a decision for the application."
+                          ;; %2 - name & email of decider
+                          :decider-invited "%1 invited %2 to decide."
+                          :decider-joined "%1 accepted the invitation to decide."
+                          ;; %2 - name of decider
+                          :decision-requested "%1 requested a decision from %2."
+                          :deleted "%1 deleted the draft."
+                          :draft-saved "%1 updated the application."
+                          ;; %2 - external id
+                          :external-id-assigned "%1 assigned an external id %2."
+                          :expiration-notifications-sent "%1 sent expiration notification email."
+                          :licenses-accepted "%1 accepted the terms of use."
+                          :licenses-added "%1 added terms of use."
+                          ;; %2 - member name
+                          :member-added "%1 added %2 to the application."
+                          :member-invited "%1 invited %2 to the application."
+                          :member-joined "%1 joined to the application."
+                          :member-removed "%1 removed %2 from the application."
+                          :member-uninvited "%1 removed %2 from the application."
+                          :rejected "%1 rejected the application."
+                          :remarked "%1 added a remark."
+                          ;; %2 - comma-separated list of catalogue item anems
+                          :resources-changed "%1 changed the resources. New resources: %2."
+                          :returned "%1 requested changes to the application."
+                          ;; %2 - name of reviewer
+                          :review-requested "%1 requested a review from %2."
+                          :reviewed "%1 reviewed the application."
+                          ;; %2 - name & email of reviewer
+                          :reviewer-invited "%1 invited %2 to review the application."
+                          :reviewer-joined "%1 accepted the invitation to review."
+                          :revoked "%1 revoked the entitlement."
+                          :submitted "%1 submitted the application for review."
+                          :unknown "Unknown"}
+                 :export {:applicant "Applicant"
+                          :external-id "External id"
+                          :first-submitted "Submitted"
+                          :id "Id"
+                          :resources "Resources"
+                          :state "State"}
+                 :handlers "Handlers"
+                 :highlight-related-events "Show related events."
+                 :id "Id"
+                 :intro [:div.intro [:p "Fill out and submit the application. Several applicants can be invited as members of the application, and each applicant has to accept the terms of use to gain access."]]
+                 :last-activity "Last activity"
+                 :latest-activity "Latest activity"
+                 :my-applications "My Applications"
+                 :redacted-attachments-replaced "New attachments replace the redacted attachments."
+                 :resource "Resource"
+                 :state "State"
+                 :states {:approved "Approved"
+                          :closed "Closed"
+                          :draft "Draft"
+                          :rejected "Rejected"
+                          :returned "Returned"
+                          :revoked "Revoked"
+                          :submitted "Applied"
+                          :unknown "Unknown"}
+                 :submitted "Sent"
+                 :todo "Action needed"
+                 :todos {:new-application "New application"
+                         :no-pending-requests "All requests have been responded to"
+                         :resubmitted-application "Resubmitted application"
+                         :unknown "Unknown"
+                         :waiting-for-decision "Waiting for a decision"
+                         :waiting-for-review "Waiting for a review"
+                         :waiting-for-your-decision "Waiting for your decision"
+                         :waiting-for-your-review "Waiting for your review"}
+                 :view "View"
+                 ;; %1 - application id
+                 ;; %2 - application description
+                 :view-application-with-description "View application %1: %2"
+                 ;; %1 - application id
+                 ;; %2 - comma-separated list of catalogue item names
+                 :view-application-without-description "View application %1 for resources: %2"}
+  :cart {:add "Add to cart"
+         :apply "Apply"
+         ;; %1 - number of resources
+         :apply-for-bundle "Apply for %1 resources as a bundle "
+         :header "%1 resources in the cart"
+         :intro [:div.intro [:p "Apply for access rights by adding resources to the cart. Resources using the same application are bundled together in the cart."]]
+         :remove "Remove from cart"}
+  :catalogue {:catalogue "Catalogue"
+              :header "Resource"
+              :intro ""
+              :more-info "More info"
+              :continue-existing-application "Continue application"
+              :continue-existing-application-intro ""
+              :apply-resources "Apply for access"}
+  :collapse {:hide "Hide"
+             :show "Show"
+             :show-less "Show less"
+             :show-more "Show more"}
+  :change-form {:change-form-intro "You are about to change the form of the following catalogue items. The changes will be made one at a time, so that each old item is terminated and a new copy will use the chosen form."
+                :form-selection "Form"}
+  :create-form {:add-column "Add column"
+                :add-form-field "Add field"
+                :add-option "Add option"
+                :additional-settings "Additional settings"
+                :collapse-aria-label "Info about "
+                ;; %1 - column number
+                :column-n "Column %1"
+                :column-key "ID"
+                :column-label "Label"
+                :confirm-remove-field "Remove this field?"
+                :field-id "Field ID"
+                ;; %1 - field number
+                ;; %2 - field title
+                :field-n "Field %1: %2"
+                :field-title "Field title"
+                :field-type "Field type"
+                :info-text "Field description (optional)"
+                :maxlength "Maximum length in characters (optional)"
+                :option-key "ID"
+                :option-label "Label"
+                ;; %1 - option number
+                :option-n "Option %1"
+                :optional "Optional field"
+                :placeholder "Placeholder text (optional)"
+                :privacy {:private "Private"
+                          :public "Public"}
+                :required-table "Require at least one row"
+                :type-attachment "Attachment"
+                :type-date "Date field"
+                :type-description "Application title"
+                :type-email "Email address"
+                :type-header "Header"
+                :type-ip-address "IP address"
+                :type-label "Label"
+                :type-multiselect "Multi-select list"
+                :type-option "Option list"
+                :type-phone-number "Phone number"
+                :type-privacy "Privacy"
+                :type-table "Table"
+                :type-text "Text field"
+                :type-texta "Text area"
+                :type-visibility "Visible"
+                :visibility {:always "Always"
+                             :field "Field"
+                             :has-value "Has one of the values"
+                             :hidden "Hidden"
+                             :only-if "Only if"}}
+  :create-license {:external-link "External link"
+                   :inline-text "Inline text"
+                   :license-attachment "Attachment"
+                   :license-text "License text"
+                   :license-type "License type"
+                   :link-to-license "License link"
+                   :title "Title"}
+  :create-resource {:licenses-selection "Licenses"
+                    :resid "Resource identifier"
+                    :resid-placeholder "urn:test:fi:some-uuid"}
+  :create-workflow {:decider-workflow "Decider workflow"
+                    :decider-workflow-description "The handler does not have the authority to approve or reject, but only a separate decider has."
+                    :default-workflow "Default workflow"
+                    :default-workflow-description "The handler is in full control of the application process. The handler may request reviews and decisions from others as needed."
+                    :handlers "Handlers"
+                    :master-workflow "Master workflow"
+                    :master-workflow-description "ONLY FOR TESTING. Union of all possible workflows."
+                    :title "Title"}
+  :dropdown {:no-results "No results"
+             :placeholder "Select..."
+             :loading "Loading..."}
+  :duo {:fields {:more-info "Additional info for applicant (optional)"}
+        :no-duo-codes "No Data Use Ontology codes"
+        :restriction {:collaboration "Primary study investigator(s)"
+                      :date "Publication moratorium until (date)"
+                      :institute "Approved institution"
+                      :location "Geographic region"
+                      :mondo "Disease (Mondo)"
+                      :months "Approved for (months)"
+                      :project "Approved project"
+                      :topic "Allowed research type"
+                      :users "Approved user(s)"}
+        :title "Data Use Ontology"
+        :validation {:mondo-not-valid "Provided Mondo codes are not compatible:"
+                     :needs-validation "Data Use Ontology restriction needs to be reviewed manually:"}}
+  ;; Format parameters for all emails (unless otherwise noted):
+  ;; %1 - name of recipient
+  ;; %2 - name of event actor
+  ;; %3 - id of application (+ description of application if available)
+  ;; %4 - name of applicant
+  ;; %5 - catalogue items of application, comma separated list
+  ;; %6 - link to application
+  :email {:applicant-changed {:subject-to-member "Applicant for application %3 changed"
+                              :message-to-member "Dear %1,\n\nThe applicant for application %3 has been changed to %4 by %2.\n\nYou can view the application at %6."
+                              :subject-to-handler "(%3) Applicant changed"
+                              :message-to-handler "Dear %1,\n\nThe applicant for application %3 has been changed to %4 by %2.\n\nYou can view the application at %6."}
+          :application-approved {:subject-to-applicant "Your application %3 has been approved"
+                                 :message-to-applicant "Dear %1,\n\nYour application %3 has been approved.\n\nYou can view the application and the decision at %6"
+                                 :subject-to-handler "(%3) Application has been approved"
+                                 :message-to-handler "Dear %1,\n\n%2 has approved the application %3 from %4.\n\nYou can view the application and the decision at %6"}
+          :application-rejected {:subject-to-applicant "Your application %3 has been rejected"
+                                 :message-to-applicant "Dear %1,\n\nYour application %3 has been rejected.\n\nYou can view the application and the decision at %6"
+                                 :subject-to-handler "(%3) Application has been rejected"
+                                 :message-to-handler "Dear %1,\n\n%2 has rejected the application %3 from %4.\n\nYou can view the application and the decision at %6"}
+          :application-closed {:subject-to-applicant "Your application %3 has been closed"
+                               :message-to-applicant "Dear %1,\n\nYour application %3 has been closed.\n\nYou can still view the application at %6"
+                               :subject-to-handler "(%3) Application has been closed"
+                               :message-to-handler "Dear %1,\n\n%2 has closed the application %3 from %4.\n\nYou can view the application at %6"}
+          :application-expiration-notification {:subject-to-member "Your unsubmitted application %2 will be deleted soon"
+                                                :message-to-member "Dear %1,\n\nYour unsubmitted application has been inactive since %3 and it will be deleted after %4, if it is not edited.\n\nYou can view and edit the application at %5"}
+          :application-returned {:subject-to-applicant "Your application %3 needs to be amended"
+                                 :message-to-applicant "Dear %1,\n\nYour application %3 has been returned for your consideration. Please, amend according to requests and resubmit.\n\nYou can view and edit the application at %6"
+                                 :subject-to-handler "(%3) Application has been returned to applicant"
+                                 :message-to-handler "Dear %1,\n\n%2 has returned the application %3 to the applicant %4 for modifications.\n\nYou can view the application at %6"}
+          :application-revoked {:subject-to-applicant "Entitlements related to your application %3 have been revoked"
+                                :message-to-applicant "Dear %1,\n\nEntitlements related to your application %3 have been revoked.\n\nYou can view the application at %6"
+                                :subject-to-handler "(%3) Entitlements have been revoked"
+                                :message-to-handler "Dear %1,\n\n%2 has revoked the entitlements related to application %3 from %4.\n\nYou can view the application at %6"}
+          :application-licenses-added {:subject "Your application's %3 terms of use have changed"
+                                       :message "Dear %1,\n\n%2 has requested your approval for changed terms of use to application %3.\n\nYou can view the application and approve the changed terms of use at %6"}
+          :application-resubmitted {:subject-to-handler "(%3) Application has been resubmitted"
+                                    :message-to-handler "Dear %1,\n\nApplication %3 has been resubmitted by %4.\n\nYou can review the application at %6"}
+          :application-submitted {:subject-to-applicant "Your application %3 has been submitted"
+                                  :message-to-applicant "Dear %1,\n\nYour application %3 has been submitted. You will be notified by email when the application has been handled.\n\nYou can view the application at %6"
+                                  :subject-to-handler "(%3) A new application has been submitted"
+                                  :message-to-handler "Dear %1,\n\n%4 has submitted a new application %3 to access resource(s) %5.\n\nYou can review the application at %6"}
+          :decided {:subject "(%3) Application decision notification"
+                    :message "Dear %1,\n\n%2 has filed a decision on application %3, submitted by %4.\n\nYou can review the application at %6"}
+          ;; generic text shared by decider-invited and reviewer-invited at the moment
+          ;; %1 - name of invited person, as entered in application
+          ;; %2 - applicant name
+          ;; %3 - application id (+ description if available)
+          ;; %4 - invitation link
+          :decider-invited {:subject "Invitation to participate in handling application %3"
+                            :message "Dear %1,\n\nYou have been invited to participate in handling application %3, by %2.\n\nYou can view the application at %4"}
+          :decision-requested {:subject "(%3) Decision request"
+                               :message "Dear %1,\n\n%2 has requested your decision on application %3, submitted by %4.\n\nYou can review application at %6"}
+          :footer "\n\nPlease do not reply to this automatically generated message."
+          :handler-reminder {:application "%1, submitted by %2"
+                             :message "Dear %1,\n\nThe following applications are in progress and may require your actions:\n\n%2\n\nYou can view the applications at %3"
+                             :subject "Applications in progress"}
+          :member-added {:subject "Added as a member of an application %3"
+                         :message "Dear %1,\n\nYou've been added as a member of application %3, submitted by %4.\n\nYou can view application and accept the terms of use at %6"}
+          ;; %1 - name of member, as entered in application
+          ;; %2 - applicant name
+          ;; %3 - application id (+ description if available)
+          ;; %4 - invitation link
+          :member-invited {:subject "Invitation to participate in application %3"
+                           :message "Dear %1,\n\nYou have been invited to participate in application %3, by %2.\n\nYou can view the application and accept the terms of use at %4"}
+          :regards "\n\nKind regards,\n\nREMS\n"
+          :remarked {:subject "(%3) Application has been commented"
+                     :message "Dear %1,\n\n%2 has commented your application %3, submitted by %4.\n\nYou can view the application and the comment at %6"}
+          :review-requested {:subject "(%3) Review request"
+                             :message "Dear %1,\n\n%2 has requested your review on application %3, submitted by %4.\n\nYou can review the application at %6"}
+          :reviewed {:subject "(%3) Application has been reviewed"
+                     :message "Dear %1,\n\n%2 has reviewed the application %3, submitted by %4.\n\nYou can review the application at %6"}
+          :reviewer-invited {:subject "Invitation to participate in handling application %3"
+                             :message "Dear %1,\n\nYou have been invited to participate in handling application %3, by %2.\n\nYou can view the application at %4"}
+          :reviewer-reminder {:application "%1, submitted by %2"
+                              :message "Dear %1,\n\nThe following applications are waiting for a review from you:\n\n%2\n\nYou can view the applications at %3"
+                              :subject "Applications pending review"}
+          :workflow-handler-invitation {:message "Dear %1,\n\n%2 has invited you to be a handler of applications of workflow %3.\n\nYou can view the workflow at %4"
+                                        :subject "Invitation to handle applications"}}
+  :footer "CSC – IT Center for Science"
+  :form {:accepted-licenses "Accepted terms of use"
+         :actions "Actions"
+         :add-comment "Add comment (shown or hidden to applicant)"
+         :add-comments-not-shown-to-applicant "Add comment (not shown to applicant)"
+         :add-comments-shown-to-applicant "Add comment (shown to applicant)"
+         :add-remark "Add remark (shown or hidden to applicant)"
+         :add-row "Add row"
+         :alert-blacklisted-users "These members of the application are blacklisted for some of the applied resources:"
+         :alert-disabled-resources "Application contains disabled catalogue items:"
+         :application "Application"
+         :attachment-remove "Remove"
+         :attachments "Attachments"
+         :attachments-as-zip "Attachments (zip)"
+         :autosave "Autosave"
+         :autosave-confirmed "Application is saved."
+         :autosave-in-progress "Saving"
+         :checkbox-checked "Yes"
+         :checkbox-unchecked "No"
+         :comment "Comment"
+         :comment-public "Show comment to applicant"
+         :copy-as-new "Copy as a new application"
+         :current-value "Current"
+         :diff-hide "Hide changes"
+         :diff-show "Show changes"
+         :events "Events"
+         :failed "Failed"
+         :has-accepted-licenses "Terms of use accepted."
+         :invalid-attachment "Attachment file type not allowed."
+         :too-large-attachment "The attachment is too large."
+         :attachment-max-size "Allowed maximum size of an attachment: %1."
+         :last-save "Last save %1."
+         :licenses "Terms of use"
+         ;; %1 - number
+         :maxlength "(max %1 characters)"
+         :must-accept-licenses "Each member is required to accept the terms of use to access the resources."
+         :no-rows "No rows"
+         :optional "(optional)"
+         :please-wait "Please wait"
+         :previous-applications "Applicant's previous applications"
+         :previous-value "Previous"
+         :required ""
+         :resources "Resources"
+         :save "Save as draft"
+         :submit "Send application"
+         :success "Success"
+         :upload "Upload an attachment"
+         :upload-extensions "Allowed file types: %1."
+         :upload-replacement-attachment "Upload replacement attachment"
+         ;; %1 - field name
+         :validation {:column-values-missing "All columns must have values for table \"%1\"."
+                      :columns-required "At least one column is required."
+                      :invalid-email "Invalid email address."
+                      :invalid-phone-number "Invalid phone number."
+                      :invalid-ip-address "Invalid IP address."
+                      :invalid-ip-address-private "This is a private IP address and cannot be used in an application."
+                      :invalid-user "Invalid user."
+                      :invalid-value "Invalid value."
+                      :options-required "At least one option is required."
+                      :required "Field \"%1\" is required."
+                      :toolong "Text in field \"%1\" too long."
+                      :unsupported "Field \"%1\" is not supported."}}
+  :header {:title "REMS"}
+  :item-lists {:move-down "Move down"
+               :move-up "Move up"
+               :remove "Remove"}
+  :label {:default "%1: %2"
+          :dash "%1 – %2"
+          :long "%1: %2 – %3"
+          :parens "%1 (%2)"}
+  :link {:download-file "Download file"
+         :opens-in-new-window "Opens in a new window"}
+  :login {:alternative "Other login options"
+          :alternative-text ""
+          :errors {:invalid-user "There was a problem logging you in because of missing information (%1). Please check your identity provider."
+                   :email "Email"
+                   :name "Name"
+                   :unknown "There was a problem logging you in. Please check your identity provider."}
+          :fake-text ""
+          :fake-title ""
+          :intro [:div [:h1 "Welcome to REMS"] [:p "This is a demo environment for testing the REMS software. The demo environment has a couple of fictional datasets to which you can apply for access. More information is available on " [:a {:href "/extra-pages/about"} "About"] " page."]]
+          :intro2 ""
+          :login "Login"
+          :oidc-text ""
+          :oidc-title ""
+          :text [:p "Please, login to access REMS."]
+          :title ""}
+  :missing "Missing translation %1"
+  :navigation {:actions "Actions"
+               :administration "Administration"
+               :applications "Applications"
+               :catalogue "Catalogue"
+               ;; %1 - name of language
+               :change-language "Change language to %1"
+               :home "Home"
+               :logout "Sign out"
+               :navigation "Navigation"
+               :navigation-small "Navigation menu"
+               :profile "Profile"
+               :skip-navigation "Skip to main content"}
+  :not-found-page {:not-found "Not found"
+                   :page-was-not-found "This page was not found."}
+  :pdf {:generated "This PDF generated at"}
+  :phases {:apply "Apply"
+           :approve "Approval"
+           :approved "Approved"
+           :phase-active "Phase active:"
+           :phase-closed "Phase closed:"
+           :phase-completed "Phase completed:"
+           :phase-pending "Phase pending:"
+           :phase-rejected "Phase rejected:"
+           :phase-revoked "Phase revoked:"
+           :rejected "Rejected"
+           :revoked "Revoked"}
+  :profile {:delete-api-key "Delete API-key"
+            :ega-api-key-expiration-date "Expiration date"
+            :ega-api-key-expired [:p "You have an expired EGA API-key. Please generate a new one."]
+            :ega-api-key-none [:p "Looks like you don't have a valid EGA API-key yet."]
+            :ega-api-key-valid [:p "You have a valid EGA API-key."]
+            :ega-full "The European Genome-phenome Archive"
+            :ega-intro [:p "Applications that you approve may have their entitlements pushed to EGA servers. This requires you to have a valid API-Key. To generate one, make sure you first link your ELIXIR user account to the EGA account."]
+            :generate-api-key "Generate API-key"
+            :idp-email "Email address from identity provider"
+            :no-email "(no email address)"
+            :notification-email "Use another email address for notifications"
+            :save "Save"
+            :settings "Settings"
+            :warning-about-missing-email [:<> "You will need to " [:a {:href "/profile"} "add an email address to your settings"] ", so that you can receive notifications about your applications."]
+            :your-details "Your user details"}
+  :search {:clear-search "Clear search"
+           :example-searches "Example searches"
+           :learn-more "Learn more"
+           :search "Search"}
+  :table {:ascending-order "Ascending order"
+          :descending-order "Descending order"
+          :all-rows-selected "All rows selected"
+          :no-rows-selected "No rows selected"
+          :some-rows-selected "Some rows selected"
+          ;; %1 - number
+          :show-all-n-rows "Show all %1 rows"}
+  :unauthorized-page {:unauthorized "Unauthorized"
+                      :you-are-unauthorized "You're unauthorized to access this page."}
+  :forbidden-page {:forbidden "Forbidden"
+                   :you-are-forbidden "Access to the page is forbidden."}
+  :error-page {:title "Problem"}
+  :meta {:description "Resource Entitlement Management System is a tool for managing access rights to resources, such as research datasets."
+         :keywords "REMS, entitlement, access management, tool, access rights, resources, datasets"}}}

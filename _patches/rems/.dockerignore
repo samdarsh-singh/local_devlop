@@ -1,0 +1,10 @@
+*
+!/example-theme/
+!/resources/
+!/src/
+!/test/
+!/test-data
+!/docker-entrypoint.sh
+!/package.json
+!/project.clj
+!/*.edn

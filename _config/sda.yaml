@@ -1,0 +1,61 @@
+log:
+  level: "info"
+  format: "text"
+
+c4gh:
+  filepath: "/keys/sda.sec.pem"
+  backupPubKey: "/keys/sda.pub.pem"
+  passphrase: "DataIsN0wEncrypted!"
+
+broker:
+  host: "sda-mq"
+  port: 5672
+  user: "starter-kit"
+  password: "starter-kit-pass"
+  vhost: "sda"
+  queue: ""
+  exchange: "sda"
+  routingKey: ""
+  routingError: "error"
+  ssl: "false"
+
+db:
+  host: "postgres"
+  port: 5432
+  database: "gdi"
+  user: "sda_user"
+  password: "sda-user-pass"
+  sslmode: "disable"
+
+inbox:
+  type: "s3"
+  url: "http://minio"
+  port: 9000
+  accesskey: "access"
+  secretkey: "secretkey"
+  bucket: "sda-inbox"
+  chunksize: 32
+
+archive:
+  type: "s3"
+  url: "http://minio"
+  port: 9000
+  accesskey: "access"
+  secretkey: "secretkey"
+  bucket: "sda-archive"
+  chunksize: 32
+
+backup:
+  type: "s3"
+  url: "http://minio"
+  port: 9000
+  accesskey: "access"
+  secretkey: "secretkey"
+  bucket: "sda-backup"
+  chunksize: 5
+  copyHeader: "false"
+
+ELIXIR_ID: "GDIclient"
+ELIXIR_SECRET: "VTzVhlxAFtE9ST6vNJ2ZK2Ic0s9UdU31"
+ELIXIR_PROVIDER: "http://keycloak:8080/admin/master/console/#/GDIrealm/"
+ELIXIR_JWKPATH: "/protocol/openid-connect/certs"

@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  # OIDC tool used in GDI:
+  # - keycloak                   localhost:8080 (UI)
+
+  keycloak:
+    image: bitnami/keycloak:20.0.5-debian-11-r4
+    container_name: keycloak
+    volumes:
+      - ./_config/realms-config.json:/opt/keycloak/data/import/realm-export.json
+    environment:
+      KEYCLOAK_DATABASE_VENDOR: postgresql
+      KEYCLOAK_DATABASE_HOST: storage-postgres
+      KEYCLOAK_DATABASE_NAME: gdi
+      KEYCLOAK_DATABASE_SCHEMA: keycloak
+      KEYCLOAK_DATABASE_USER: keycloak
+      KEYCLOAK_DATABASE_PASSWORD: keycloakpassword
+      KEYCLOAK_DATABASE_PORT: 5432
+      KEYCLOAK_CREATE_ADMIN_USER: true
+      KEYCLOAK_ADMIN_USER: administrat0r
+      KEYCLOAK_ADMIN_PASSWORD: password
+      KEYCLOAK_MANAGEMENT_PASSWORD: password
+      KEYCLOAK_HTTP_PORT: 8080
+      KEYCLOAK_HTTPS_PORT: 8443
+      KEYCLOAK_EXTRA_ARGS:
+        -Dkeycloak.import=/opt/keycloak/data/import/realm-export.json
+    ports:
+      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:8443:8443"

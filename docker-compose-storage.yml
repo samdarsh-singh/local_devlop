@@ -1,0 +1,95 @@
+version: "3.9"
+
+volumes:
+  pgdata:
+    driver: local
+  mongodata:
+    driver: local
+  miniodata:
+    driver: local
+
+services:
+
+  # Common infrastructure tools used in GDI:s
+  # ----------------------------------------
+  # - postgres:       localhost:5432 (API)
+  # - mongo:          localhost:27017 (API)
+  # - mongo-express:  localhost:8081 (UI)
+  # - minio:          localhost:9000 (API), localhost:9001 (UI)
+
+  postgres:
+    image: postgres:15.2-alpine
+    container_name: storage-postgres
+    ports:
+      - "127.0.0.1:5432:5432"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: "P0stgrEs.S3cr3t,P0wrd!"
+      POSTGRES_DB: gdi
+    volumes:
+      - "pgdata:/var/lib/postgresql/data"
+      - "./_volumes/_infra/postgres:/docker-entrypoint-initdb.d"
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "admin", "-d", "gdi"]
+      start_period: 2s
+      interval: 3s
+      timeout: 5s
+      retries: 5
+
+  mongo:
+    image: mongo:5
+    container_name: storage-mongo
+    ports:
+      - "127.0.0.1:27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: "M0ngo.S3cr3t,P0wrd!"
+      MONGO_INITDB_DATABASE: beacon
+    volumes:
+      - "mongodata:/data/db"
+      - "./_volumes/_infra/mongo:/docker-entrypoint-initdb.d/:ro"
+
+  mongo-express:
+    image: mongo-express:0.54.0
+    container_name: storage-mongo-express
+    ports:
+      - "127.0.0.1:8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: "M0ngo.S3cr3t,P0wrd!"
+      ME_CONFIG_MONGODB_SERVER: mongo
+
+  minio:
+    image: minio/minio:RELEASE.2023-04-20T17-56-55Z
+    command: server /data --console-address ":9001"
+    container_name: storage-minio
+    ports:
+      - "127.0.0.1:9000:9000"
+      - "127.0.0.1:9001:9001"
+    environment:
+      MINIO_ROOT_USER: access
+      MINIO_ROOT_PASSWORD: secretkey
+      MINIO_SERVER_URL: http://127.0.0.1:9000
+    volumes:
+      - "miniodata:/data"
+    healthcheck:
+      test: ["CMD", "curl", "-fq", "http://localhost:9000/minio/health/live"]
+      interval: 5s
+      timeout: 20s
+      retries: 3
+
+  minio-bucket-create:
+    image: minio/mc:RELEASE.2023-04-12T02-21-51Z
+    container_name: storage-minio-bucket-create
+    entrypoint: >
+      /bin/sh -c "
+      sleep 10;
+      /usr/bin/mc -q config host add minio http://minio:9000 access secretkey;
+      /usr/bin/mc -q mb minio/sda-inbox || true;
+      /usr/bin/mc -q mb minio/sda-archive || true;
+      /usr/bin/mc -q mb minio/sda-backup || true;
+      exit 0;
+      "
+    depends_on:
+      minio:
+        condition: service_started

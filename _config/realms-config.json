@@ -1,0 +1,53 @@
+{
+    "id": "GDIrealm",
+    "realm": "GDIrealm",
+    "enabled": true,
+    "sslRequired": "none",
+    "clients": [
+        {
+            "id": "GDIclient",
+            "clientId": "GDIclient",
+            "rootUrl": "http://localhost:8080",
+            "adminUrl": "http://localhost:8080",
+            "surrogateAuthRequired": false,
+            "enabled": true,
+            "redirectUris": [
+                "*"
+            ],
+            "webOrigins": [
+                "*"
+            ],
+            "protocol": "openid-connect",
+            "fullScopeAllowed": true,
+            "secret": "VTzVhlxAFtE9ST6vNJ2ZK2Ic0s9UdU31",
+            "authorizationServicesEnabled": true
+        }
+    ],
+    "roles": {
+        "realm": [
+            {
+                "id": "GDIuser-1",
+                "name": "GDIuser-1",
+                "description": "Regular GDI user role",
+                "composite": false
+            }
+        ]
+    },
+    "users": [
+        {
+            "username": "GDIuser",
+            "enabled": true,
+            "emailVerified": false,
+            "credentials": [
+                {
+                    "type": "password",
+                    "value": "password",
+                    "temporary": false
+                }
+            ],
+            "realmRoles": [
+                "GDIuser-1"
+            ]
+        }
+    ]
+}

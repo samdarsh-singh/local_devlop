@@ -1,0 +1,369 @@
+version: "3.9"
+
+configs:
+  beacon-api-config:
+    file: ./_config/beacon-api.py
+  beacon-tools-config:
+    file: ./_config/beacon-tools.yaml
+  rems-config:
+    file: ./_config/rems.edn
+  sda-config:
+    file: ./_config/sda.yaml
+  sda-mq-definitions:
+    file: ./_config/sda-mq-definitions.json
+
+services:
+  # GDI components (beacon, beacon-network, REMS, SDA, htsget-server)
+  # ------------------------------------------------------------------
+  # - beacon2-ri-api:             localhost:8000 (API)
+  # - beacon-network-ui:          localhost:8010 (UI)
+  # - beacon-network-registry:    localhost:8011 (API)
+  # - beacon-network-aggregator:  localhost:8012 (API)
+  # - htsget-refserver:           localhost:8020 (API)
+  # - rems:                       localhost:8030 (UI)
+  # - sda-mq:                     localhost:15672, localhost:5672 (API)
+  # - sda-auth:                   localhost:8040 (API)
+  # - sda-s3proxy:                localhost:8050 (API), localhost:8051 (healthcheck)
+  # - sda-download:               localhost:8060 (API)
+  # - sda-ingest
+  # - sda-mapper
+  # - sda-finalize
+  # - sda-verify
+  # - sda-backup
+  # - sda-orchestrator
+
+  beacon2-ri-api:
+    image: gdi/beacon2-ri-api
+    container_name: beacon2-ri-api
+    build: beacon2-ri-api
+    ports:
+      - "127.0.0.1:8000:8000"
+    configs:
+      - source: beacon-api-config
+        target: /beacon/beacon/conf.py
+    volumes:
+      - "./_volumes/beacon/ontologies:/beacon/ontologies"
+
+# TOOLS needs to be executed directly - it is not a service exposed at some port
+#  beacon2-ri-tools:
+#    image: gdi/beacon2-ri-tools
+#    container_name: beacon2-ri-tools
+#    build: beacon2-ri-tools
+#    configs:
+#      - source: beacon-tools-config
+#        target: /usr/share/beacon-ri/beacon2-ri-tools/config.yaml
+#    volumes:
+#      - "./_volumes/beacon/databases:/usr/share/beacon-ri/databases"
+#      - "./_volumes/beacon/pro:/usr/share/beacon-ri/pro"
+#    depends_on:
+#      - beacon2-ri-api
+
+  beacon-network-ui:
+    image: gdi/beacon-network-ui
+    container_name: beacon-network-ui
+    build:
+      context: beacon-network-ui
+      args:
+        VUE_APP_REGISTRY_URL: 'http://localhost:8011/'
+        VUE_APP_AGGREGATOR_URL: 'http://localhost:8012/'
+        VUE_APP_DEVELOPMENT: 'true'
+        VUE_APP_LOGIN_URL: ''
+        VUE_APP_LOGOUT_URL: ''
+        VUE_APP_JWT_AUDIENCE: ''
+        VUE_APP_MATOMO_URL: ''
+        VUE_APP_MATOMO_ID: ''
+        VUE_APP_SECURITY_DOCUMENT: ''
+    ports:
+      - "127.0.0.1:8010:8080"
+
+  beacon-network-registry:
+    image: gdi/beacon-network
+    container_name: beacon-network-registry
+    build: beacon-network
+    environment:
+      BEACON_RUN_APP: registry
+      APP_HOST: "0.0.0.0"
+      APP_PORT: 8080
+      DB_HOST: storage-postgres
+      DB_PORT: 5432
+      DB_NAME: gdi
+      DB_USER: beacon_network
+      DB_PASS: beacon-network-password
+      DEBUG: "true"
+    ports:
+      - "127.0.0.1:8011:8080"
+    depends_on:
+      - beacon2-ri-api
+
+  beacon-network-aggregator:
+    image: gdi/beacon-network
+    container_name: beacon-network-aggregator
+    environment:
+      BEACON_RUN_APP: aggregator
+      APP_HOST: "0.0.0.0"
+      APP_PORT: 8080
+      DEBUG: "true"
+    ports:
+      - "127.0.0.1:8012:8080"
+    depends_on:
+      - beacon-network-registry
+
+  htsget-refserver:
+    image: gdi/htsget-refserver
+    container_name: htsget-refserver
+    build: htsget-refserver
+    ports:
+      - "127.0.0.1:8020:3000"
+    #volumes:
+    #  - "/directory/to/config:/usr/src/app/config"
+    #command:
+    #  ./htsget-refserver -config /usr/src/app/config/config.json
+
+  rems:
+    image: gdi/rems
+    container_name: rems
+    build: rems
+    ports:
+      - "127.0.0.1:8030:3000"
+    environment:
+      PORT: 3000
+      PUBLIC_URL: http://localhost:8030/
+      AUTHENTICATION: :fake
+      DATABASE_URL: postgresql://storage-postgres/gdi?user=rems&password=remspassword
+    configs:
+      - source: rems-config
+        target: /rems/config/config.edn
+
+  sda-mq:
+    image: gdi/sda-mq
+    # This sets the value of "Node Name" in RabbitMQ and is important for consistency:
+    hostname: sda-mq-docker
+    container_name: sda-mq
+    build: sensitive-data-archive/rabbitmq
+    environment:
+      NOTLS: "true"
+      MQ_VHOST: sda
+      RABBITMQ_DEFAULT_USER: starter-kit
+      RABBITMQ_DEFAULT_PASS: starter-kit-pass
+    ports:
+      - "127.0.0.1:15672:15672"
+      - "127.0.0.1:5672:5672"
+    configs:
+      - source: sda-mq-definitions
+        target: /etc/rabbitmq/definitions.json
+    healthcheck:
+      test: [ "CMD-SHELL", "rabbitmq-diagnostics -q check_running && rabbitmq-diagnostics -q check_local_alarms"]
+      start_period: 5s
+      interval: 3s
+      timeout: 5s
+      retries: 5
+
+  sda-auth:
+    image: gdi/sda-auth
+    container_name: sda-auth
+    build: sensitive-data-archive/sda-auth
+    ports:
+      - "127.0.0.1:8040:8080"
+    environment:
+      LOG_LEVEL: info
+      S3INBOX: s3.example.com
+
+      # Parameters for LifeScience AAI
+      ELIXIR_ID: XC56EL11xx
+      ELIXIR_PROVIDER: http://oidc
+      ELIXIR_SECRET: wHPVQaYXmdDHg
+      ELIXIR_JWKPATH: /jwks
+
+      # Parameters for Central EGA
+      CEGA_AUTHURL: http://cega:8443/username/
+      CEGA_ID: dummy
+      CEGA_SECRET: dummy
+
+      CORS_ORIGINS: http://localhost:8080
+      CORS_METHODS: GET,POST, OPTIONS
+      CORS_CREDENTIALS: TRUE
+
+      # Properties of this SDA authenticator:
+      JWTISSUER: http://sda-auth:8040
+      JWTPRIVATEKEY: keys/sign-jwt.key
+      JWTSIGNATUREALG: ES256
+
+    volumes:
+      - ./sensitive-data-archive/sda-auth/keys:/keys
+    depends_on:
+      sda-mq:
+        condition: service_healthy
+
+  sda-s3proxy:
+    image: gdi/sda-s3proxy
+    container_name: sda-s3proxy
+    build: sensitive-data-archive/sda-s3proxy
+    command: sda-s3inbox
+    ports:
+      - "127.0.0.1:8050:8000"
+      - "127.0.0.1:8051:8001"
+    environment:
+      LOG_LEVEL: info
+      AWS_URL: http://storage-minio:9000
+      AWS_ACCESSKEY: ElixirID
+      AWS_SECRETKEY: 987654321
+      AWS_BUCKET: test
+      AWS_REGION:
+      AWS_READYPATH: /minio/health/ready
+      AWS_CACERT:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: lega_in
+      DB_PASSWORD: lega_in
+      DB_DATABASE: lega
+      DB_CACERT:
+      DB_SSLMODE: disable
+      DB_CLIENTCERT:
+      DB_CLIENTKEY:
+      BROKER_HOST: mq
+      BROKER_USER: test
+      BROKER_PASSWORD: test
+      BROKER_PORT: 5671
+      BROKER_VHOST: /test
+      BROKER_EXCHANGE: localega.v1
+      BROKER_ROUTINGKEY: files.inbox
+      BROKER_SSL: true
+      BROKER_CACERT:
+      BROKER_CLIENTCERT: /certs/client.crt
+      BROKER_CLIENTKEY: /certs/client.key
+      BROKER_VERIFYPEER: true
+      SERVER_CERT:
+      SERVER_KEY:
+      SERVER_JWTPUBKEYPATH:
+      LOG_FORMAT: json
+    volumes:
+      - "./_config/crypt4gh:/keys:ro"
+    depends_on:
+      sda-mq:
+        condition: service_healthy
+
+  sda-download:
+    image: gdi/sda-download
+    container_name: sda-download
+    command: sda-download
+    build: sensitive-data-archive/sda-download
+    environment:
+      DB_USER: download
+      DB_PASSWORD: download
+    ports:
+      - "127.0.0.1:8060:8443"
+    configs:
+      - source: sda-config
+        target: /config.yaml
+    volumes:
+      - "./_config/crypt4gh:/keys:ro"
+    depends_on:
+      sda-mq:
+        condition: service_healthy
+
+  sda-ingest:
+    image: gdi/sda-pipeline
+    container_name: sda-ingest
+    command: sda-ingest
+    build: sensitive-data-archive/sda-pipeline
+    environment:
+      BROKER_QUEUE: ingest
+      BROKER_ROUTINGKEY: archived
+    configs:
+      - source: sda-config
+        target: /config.yaml
+    volumes:
+      - "./_config/crypt4gh:/keys:ro"
+    depends_on:
+      sda-mq:
+        condition: service_healthy
+
+  sda-mapper:
+    image: gdi/sda-pipeline
+    container_name: sda-mapper
+    command: sda-mapper
+    environment:
+      BROKER_QUEUE: mappings
+    configs:
+      - source: sda-config
+        target: /config.yaml
+    volumes:
+      - "./_config/crypt4gh:/keys:ro"
+    depends_on:
+      sda-mq:
+        condition: service_healthy
+
+  sda-verify:
+    image: gdi/sda-pipeline
+    container_name: sda-verify
+    command: sda-verify
+    environment:
+      BROKER_QUEUE: archived
+      BROKER_ROUTINGKEY: verified
+    configs:
+      - source: sda-config
+        target: /config.yaml
+    volumes:
+      - "./_config/crypt4gh:/keys:ro"
+    depends_on:
+      sda-mq:
+        condition: service_healthy
+
+  sda-finalize:
+    image: gdi/sda-pipeline
+    command: sda-finalize
+    container_name: sda-finalize
+    environment:
+      BROKER_QUEUE: accession
+      BROKER_ROUTINGKEY: backup
+      BROKER_ROUTINGERROR: error
+    configs:
+      - source: sda-config
+        target: /config.yaml
+    volumes:
+      - "./_config/crypt4gh:/keys:ro"
+    depends_on:
+      sda-mq:
+        condition: service_healthy
+
+  sda-backup:
+    image: gdi/sda-pipeline
+    command: sda-backup
+    container_name: sda-backup
+    environment:
+      BROKER_QUEUE: backup
+      BROKER_ROUTINGKEY: completed
+      BROKER_ROUTINGERROR: error
+    configs:
+      - source: sda-config
+        target: /config.yaml
+    volumes:
+      - "./_config/crypt4gh:/keys:ro"
+    depends_on:
+      sda-mq:
+        condition: service_healthy
+
+  sda-orchestrator:
+    image: gdi/sda-pipeline
+    command: sda-orchestrate
+    container_name: sda-orchestrator
+    environment:
+      BROKER_QUEUE: inbox
+      BROKER_ROUTINGERROR: error
+      PROJECT_FQDN: nbis.se
+
+      # the following is a repetition of orchestrator default variables
+      INBOX_QUEUE: inbox
+      COMPLETED_QUEUE: completed
+      VERIFIED_QUEUE: verified
+      ACCESSIONIDS_QUEUE: accession
+      INGEST_QUEUE: ingest
+      MAPPINGS_QUEUE: mappings
+    configs:
+      - source: sda-config
+        target: /config.yaml
+    volumes:
+      - "./_config/crypt4gh:/keys:ro"
+    depends_on:
+      sda-mq:
+        condition: service_healthy

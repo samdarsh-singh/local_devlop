@@ -1,0 +1,3 @@
+-- We can't recreate the unique constraint since it would fail if the db contains duplicate resources.
+-- We basically can't support rolling back this migration in general.
+-- Luckily nothing really breaks if the constraint is missing.

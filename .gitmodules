@@ -1,0 +1,32 @@
+[submodule "beacon2-ri-api"]
+	path = beacon2-ri-api
+	url = git@github.com:EGA-archive/beacon2-ri-api.git
+	branch = master
+[submodule "beacon2-ri-tools"]
+	path = beacon2-ri-tools
+	url = git@github.com:EGA-archive/beacon2-ri-tools.git
+	branch = main
+[submodule "beacon-network"]
+	path = beacon-network
+	url = git@github.com:CSCfi/beacon-network.git
+	branch = master
+[submodule "beacon-network-ui"]
+	path = beacon-network-ui
+	url = git@github.com:CSCfi/beacon-network-ui.git
+	branch = master
+[submodule "htsget-refserver"]
+	path = htsget-refserver
+	url = git@github.com:ga4gh/htsget-refserver.git
+	branch = main
+[submodule "htsget"]
+	path = htsget
+	url = git@github.com:ga4gh/htsget.git
+	branch = master
+[submodule "rems"]
+	path = rems
+	url = git@github.com:CSCfi/rems.git
+	branch = master
+[submodule "sensitive-data-archive"]
+	path = sensitive-data-archive
+	url = git@github.com:neicnordic/sensitive-data-archive.git
+	branch = main
